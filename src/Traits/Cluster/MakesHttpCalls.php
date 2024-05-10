@@ -10,6 +10,8 @@ use RenokiCo\PhpK8s\ResourcesList;
 
 trait MakesHttpCalls
 {
+    public static $timeout = 10;
+
     /**
      * Get the callable URL for a specific path.
      *
@@ -82,6 +84,7 @@ trait MakesHttpCalls
         try {
             $response = $this->getClient()->request($method, $this->getCallableUrl($path, $query), [
                 RequestOptions::BODY => $payload,
+                RequestOptions::TIMEOUT => self::$timeout,
             ]);
         } catch (ClientException $e) {
             $errorPayload = json_decode((string) $e->getResponse()->getBody(), true);
